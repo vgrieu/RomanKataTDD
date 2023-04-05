@@ -7,31 +7,57 @@
         private const string ROMAN_NUMBER_TEN = "X";
         private const string ROMAN_NUMBER_FIFTY = "L";
 
-        public NumericToRomanConverter()
-        { }
+        private static List<(int, string)> _romanNumbersStepsList = new List<(int, string)>
+            {
+                (40, ROMAN_NUMBER_TEN + ROMAN_NUMBER_FIFTY)
+                , (10, ROMAN_NUMBER_TEN)
+                , (9, ROMAN_NUMBER_ONE + ROMAN_NUMBER_TEN)
+                , (5, ROMAN_NUMBER_FIVE)
+                , (4, ROMAN_NUMBER_ONE + ROMAN_NUMBER_FIVE)
+                , (1, ROMAN_NUMBER_ONE.ToString())
+            };
 
-        internal string NumericToRoman(int normalNumber)
+        /*
+        * On prend un nombre à transformer et on le transforme en nombre romain
+        */
+
+        /*
+        * On prend un nombre à transformer 
+        * on gère toutes les étapes de la numérotation romaine
+        * et on renvoie le résultat en romain
+        */
+
+        /*
+        * On itere sur les étapes de la numérotation romaine
+        * Pour chaque étape, tant que le nombre à transformer est supérieur
+        * ou égal à la valeur de cette étape en nombre arabe
+        * on va ajouter la valeur de l'étape en nombre romain à notre résultat
+        * et soustraire la valeur de l'étape du nombre à transformer.
+        * Jusqu'à la dernière étape, puis on ajoute à notre résultat
+        * un nombre de 'I' egal à ce qu'il reste du nombre à transformer
+        */
+
+        /*
+        * On itere sur les étapes de la numérotation romaine
+        * Pour chaque étape, tant que le nombre à transformer est supérieur
+        * ou égal à la valeur de cette étape en nombre arabe
+        * on va ajouter la valeur de l'étape en nombre romain à notre résultat
+        * et soustraire la valeur de l'étape du nombre à transformer.
+        */
+
+        internal string NumericToRoman(int numberToTransform)
         {
-            int threshold = 40;
-            string roman_threshold = ROMAN_NUMBER_TEN + ROMAN_NUMBER_FIFTY;
+            string result = string.Empty;
+            foreach ((int arabStepValue, string romanStepValue) in _romanNumbersStepsList)
+            {
+                while (numberToTransform >= arabStepValue)
+                {
+                    numberToTransform = numberToTransform - arabStepValue;
+                    result += romanStepValue;
+                }
+            }
 
-            if (normalNumber >= threshold)
-                return roman_threshold + NumericToRoman(normalNumber - threshold);
-
-            threshold = 10;
-            roman_threshold = ROMAN_NUMBER_TEN;
-
-            if (normalNumber >= threshold)
-                return roman_threshold + NumericToRoman(normalNumber - threshold);
-
-            if (normalNumber >= 9)
-                return ROMAN_NUMBER_ONE + ROMAN_NUMBER_TEN + NumericToRoman(normalNumber - 9);
-            if (normalNumber >= 5)
-                return ROMAN_NUMBER_FIVE + NumericToRoman(normalNumber - 5);
-            if (normalNumber >= 4)
-                return ROMAN_NUMBER_ONE + ROMAN_NUMBER_FIVE + NumericToRoman(normalNumber - 4);
-
-            return new String(ROMAN_NUMBER_ONE, normalNumber);
+            return result;
         }
     }
 }
